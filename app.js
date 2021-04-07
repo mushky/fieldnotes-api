@@ -19,7 +19,7 @@ mongoose.connect('mongodb://localhost/notesDB')
   });
 
 // set up port
-const port = 5035;
+const port = 3001;
 // set up route
 app.get('/', (req, res) => {
   res.status(200).json({
