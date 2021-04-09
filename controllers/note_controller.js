@@ -1,12 +1,54 @@
 import mongoose from 'mongoose';
 import Note from '../models/note';
+  
+// Get all Notes
+export function getNotes(req, res) {
+  Note.find()
+    .select('_id title content userId')
+    .then((notes) => {
+      return res.status(200).json({
+        success: true,
+        message: 'A list of all notes',
+        Note: notes,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: 'Server error. Please try again.',
+        error: err.message,
+      });
+    });
+}
+
+// Get all notes from user
+export function getNotesByUser(req, res) {
+	const userId = req.params.userId;
+	Note.find({ userId: userId })
+		.select('_id title content userId')
+		.then((notes) => {
+			return res.status(200).json({
+				success: true,
+				message: 'A list of all notes by user',
+				Note: notes,
+			});
+		})
+		.catch((err) => {
+			res.status(500).json({
+				success: false,
+				message: 'Server error. Please try again.',
+				error: err.message,
+			});
+		})
+}
 
 // create new note
 export function createNote(req, res) {
   const note = new Note({
     _id: mongoose.Types.ObjectId(),
+		userId: req.body.userId,
     title: req.body.title,
-    description: req.body.description,
+    content: req.body.content,
   });
   return note
     .save()
@@ -24,43 +66,23 @@ export function createNote(req, res) {
         error: error.message,
       });
     });
-}  
-
-// Get all Notes
-export function getNotes( res, req) {
-  Note.find()
-    .select('_id title description')
-    .then((allCause) => {
-      return res.status(200).json({
-        success: true,
-        message: 'A list of all notes',
-        Cause: allCause,
-      });
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: 'Server error. Please try again.',
-        error: err.message,
-      });
-    });
 }
 
 // Get Single Note
 export function getNote(req, res) {
-  const id = req.params.causeId;
+  const id = req.params.noteId;
   Note.findById(id)
     .then((note) => {
       res.status(200).json({
         success: true,
         message: `More on ${note.title}`,
-        Cause: note,
+        Note: note,
       });
     })
     .catch((err) => {
       res.status(500).json({
         success: false,
-        message: 'This cause does not exist',
+        message: 'This note does not exist',
         error: err.message,
       });
 		});
@@ -68,7 +90,7 @@ export function getNote(req, res) {
 
 // update note
 export function updateNote(req, res) {
-  const id = req.params.causeId;
+  const id = req.params.noteId;
   const updateObject = req.body;
   Note.update({ _id:id }, { $set:updateObject })
     .exec()
@@ -89,8 +111,8 @@ export function updateNote(req, res) {
 
 // delete a note
 export function deleteNote(req, res) {
-  const id = req.params.causeId;
-  Cause.findByIdAndRemove(id)
+  const id = req.params.noteId;
+  Note.findByIdAndRemove(id)
     .exec()
     .then(()=> res.status(204).json({
       success: true,

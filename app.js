@@ -5,6 +5,9 @@ import logger from 'morgan';
 import Routes from './routes/Routes';
 
 const app = express();
+const cors = require('cors');
+
+app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(logger('dev'));

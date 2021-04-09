@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-
+const { Schema } = mongoose;
 mongoose.Promise = global.Promise;
 
-const noteSchema = new mongoose.Schema({
+const NoteSchema = new Schema({
   _id: mongoose.Schema.Types.ObjectId,
   title: {
     type: String,
@@ -12,6 +12,10 @@ const noteSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+	userId: {
+		type: String,
+		required: true
+	}
 });
 
-export default mongoose.model('Note', noteSchema);
+export default mongoose.model('Note', NoteSchema);

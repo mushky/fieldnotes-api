@@ -1,7 +1,10 @@
 import mongoose from 'mongoose';
+const NoteSchema = require('./note');
+const { Schema } = mongoose;
 
 mongoose.Promise = global.Promise;
-const userSchema = new mongoose.Schema({
+
+const UserSchema = new Schema({
   _id: mongoose.Schema.Types.ObjectId,
   username: {
     type: String,
@@ -24,4 +27,4 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model('User', userSchema);
+export default mongoose.model('User', UserSchema);
