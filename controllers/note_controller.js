@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 import Note from '../models/note';
-  
+
 // Get all Notes
 export function getNotes(req, res) {
   Note.find()
-    .select('_id title content userId')
+    .select('_id title content category tags userId')
     .then((notes) => {
       return res.status(200).json({
         success: true,
@@ -25,7 +25,7 @@ export function getNotes(req, res) {
 export function getNotesByUser(req, res) {
 	const userId = req.params.userId;
 	Note.find({ userId: userId })
-		.select('_id title content userId')
+		.select('_id title content category tags userId')
 		.then((notes) => {
 			return res.status(200).json({
 				success: true,
@@ -49,6 +49,9 @@ export function createNote(req, res) {
 		userId: req.body.userId,
     title: req.body.title,
     content: req.body.content,
+    source: req.body.source,
+		category: req.body.category,
+		tags: req.body.tags
   });
   return note
     .save()

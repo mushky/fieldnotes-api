@@ -11,8 +11,7 @@ router.post('/notes', verifyToken, createNote);
 router.get('/notes', getNotes);
 router.get('/notes/:noteId', getNote);
 
-
-router.patch('/notes/:noteId', verifyToken, updateNote);
+router.put('/notes/:noteId', verifyToken, updateNote);
 router.delete('/notes/:noteId', verifyToken, deleteNote)
 
 router.post('/user/signup', createUser);

@@ -70,8 +70,12 @@ export function createUser(req, res) {
 
 export function loginUser(req, res) {
   const { username, password } = req.body;
+	console.log(req.body);
+	console.log('hit');
   User.findOne({ username })
     .then((existingUser) => {
+			console.log(existingUser)
+
       bcrypt.compare(password, existingUser.password, (err, result) => {
         if (err) {
           return res.status(401).json({
