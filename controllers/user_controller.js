@@ -102,12 +102,5 @@ export function loginUser(req, res) {
     .catch(() => res.status(500).json({ message: 'Our server is in the locker room, please do try again.' }));
 }
 
-function notesByUser(req, res) {
-	const { id } = req.params;
-	const user = User.findById(id).populate('notes');
-
-	res.json(user.notes);
-}
-
 
 export default User;
