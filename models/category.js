@@ -7,7 +7,11 @@ const CategorySchema = new Schema({
   name: {
     type: String,
     required: true,
-  }
+  },
+	userId: {
+		type: String,
+		required: true
+	}
 });
 
 export default mongoose.model('Category', CategorySchema);

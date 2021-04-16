@@ -4,7 +4,7 @@ import Category from '../models/category';
 // Get all Categories
 export function getCategories(req, res) {
   Category.find()
-    .select('_id name')
+    .select('_id name userId')
     .then((categories) => {
       return res.status(200).json({
         success: true,
@@ -26,6 +26,7 @@ export function createCategory(req, res) {
   const category = new Category({
     _id: mongoose.Types.ObjectId(),
 		name: req.body.name,
+		userId: req.body.userId,
   });
   return category
     .save()
@@ -88,7 +89,7 @@ export function updateCategory(req, res) {
 
 // delete a note
 export function deleteCategory(req, res) {
-  const id = req.params.noteId;
+  const id = req.params.categoryId;
   Category.findByIdAndRemove(id)
     .exec()
     .then(()=> res.status(204).json({
