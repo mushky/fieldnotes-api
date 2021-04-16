@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { createNote, getNotes, getNote, updateNote, deleteNote, getNotesByUser } from '../controllers/note_controller';
+import { createNote, getNotes, searchNotesByContent, getNote, updateNote, deleteNote, getNotesByUser } from '../controllers/note_controller';
 import { createUser, loginUser } from '../controllers/user_controller';
 import { getCategories, getCategoriesByUserId, getCategory, createCategory, updateCategory, deleteCategory } from '../controllers/category_controller';
 
@@ -11,6 +11,7 @@ const router = express.Router();
 // Notes
 router.get('/notes/user/:userId', getNotesByUser);
 router.get('/notes', getNotes);
+router.get('/notes/search', searchNotesByContent)
 router.get('/notes/:noteId', getNote);
 router.post('/notes', verifyToken, createNote);
 router.put('/notes/:noteId', verifyToken, updateNote);
