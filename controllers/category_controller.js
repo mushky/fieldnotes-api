@@ -21,6 +21,26 @@ export function getCategories(req, res) {
     });
 }
 
+export function getCategoriesByUserId(req, res) {
+	const userId = req.params.userId;
+	Category.find({ userId: userId })
+		.select('_id name userId')
+		.then((categories) => {
+			return res.status(200).json({
+				success: true,
+				message: 'A list of all categories by user',
+				category: categories,
+			});
+		})
+		.catch((err) => {
+			res.status(500).json({
+				success: false,
+				message: 'Server error. Please try again.',
+				error: err.message,
+			});
+		})
+}
+
 // create new category
 export function createCategory(req, res) {
   const category = new Category({
