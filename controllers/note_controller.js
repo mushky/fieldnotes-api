@@ -42,6 +42,29 @@ export function getNotesByUser(req, res) {
 		})
 }
 
+export function searchNotesByContent(req, res) {
+  const userId = req.query.userId;
+  const content = req.query.content;
+  console.log(content);
+  console.log(userId);
+  Note.find({content: {$regex: content }}) // $options: 'i'
+    .select('_id title content link category tags userId')
+    .then((notes) => {
+      return res.status(200).json({
+        success: true,
+        message: 'A list of all notes by selected category',
+        Note: notes,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: 'Server error. Please try again.',
+        error: err
+      })
+    })
+}
+
 // create new note
 export function createNote(req, res) {
   const note = new Note({
