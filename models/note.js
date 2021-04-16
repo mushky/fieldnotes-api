@@ -27,6 +27,10 @@ const NoteSchema = new Schema({
 	userId: {
 		type: String,
 		required: true
+	},
+	categoryId: {
+		type: String,
+		required: false
 	}
 });
 

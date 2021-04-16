@@ -4,7 +4,7 @@ import Note from '../models/note';
 // Get all Notes
 export function getNotes(req, res) {
   Note.find()
-    .select('_id title content category tags userId')
+    .select('_id title content link category tags userId')
     .then((notes) => {
       return res.status(200).json({
         success: true,
@@ -25,7 +25,7 @@ export function getNotes(req, res) {
 export function getNotesByUser(req, res) {
 	const userId = req.params.userId;
 	Note.find({ userId: userId })
-		.select('_id title content category tags userId')
+		.select('_id title content link category tags userId')
 		.then((notes) => {
 			return res.status(200).json({
 				success: true,
@@ -121,6 +121,7 @@ export function deleteNote(req, res) {
       success: true,
     }))
     .catch((err) => res.status(500).json({
+      error: err,
       success: false,
     }));
 }
