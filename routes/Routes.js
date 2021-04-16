@@ -17,7 +17,7 @@ router.put('/notes/:noteId', verifyToken, updateNote);
 router.delete('/notes/:noteId', verifyToken, deleteNote)
 
 // Category
-router.get('/categories/:userId', getCategoriesByUserId);
+router.get('/categories/user/:userId', getCategoriesByUserId);
 router.get('/categories', getCategories);
 router.get('/category/:categoryId', getCategory);
 router.post('/categories', createCategory);
