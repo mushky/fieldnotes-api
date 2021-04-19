@@ -24,6 +24,10 @@ const NoteSchema = new Schema({
 		type: String,
 		required: false
 	},
+	favorite: {
+		type: Boolean,
+		required: false
+	},
 	userId: {
 		type: String,
 		required: true
@@ -32,6 +36,6 @@ const NoteSchema = new Schema({
 		type: String,
 		required: false
 	}
-});
+}, { timestamps: true },);
 
 export default mongoose.model('Note', NoteSchema);

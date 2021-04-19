@@ -67,6 +67,7 @@ export function searchNotesByContent(req, res) {
 
 // create new note
 export function createNote(req, res) {
+  console.log(req);
   const note = new Note({
     _id: mongoose.Types.ObjectId(),
 		userId: req.body.userId,
