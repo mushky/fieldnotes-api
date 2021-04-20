@@ -30,7 +30,7 @@ export function getNotesByUser(req, res) {
 			return res.status(200).json({
 				success: true,
 				message: 'A list of all notes by user',
-				Note: notes,
+				Note: notes.reverse(),
 			});
 		})
 		.catch((err) => {
