@@ -1,8 +1,8 @@
 import express from 'express';
 
-import { createNote, getNotes, searchNotesByContent, getNote, updateNote, deleteNote, getNotesByUser } from '../controllers/note_controller';
-import { createUser, loginUser } from '../controllers/user_controller';
+import { createNote, getNotes, searchNotesByContent, getNote, updateNote, deleteNote, getNotesByUser, getNotesByUserAndCategory } from '../controllers/note_controller';
 import { getCategories, getCategoriesByUserId, getCategory, createCategory, updateCategory, deleteCategory } from '../controllers/category_controller';
+import { createUser, loginUser } from '../controllers/user_controller';
 
 import verifyToken from '../middleware/verifytoken';
 
@@ -12,6 +12,7 @@ const router = express.Router();
 router.get('/notes/user/:userId', getNotesByUser);
 router.get('/notes', getNotes);
 router.get('/notes/search', searchNotesByContent)
+router.get('/notes/category', getNotesByUserAndCategory)
 router.get('/notes/:noteId', getNote);
 router.post('/notes', verifyToken, createNote);
 router.put('/notes/:noteId', verifyToken, updateNote);

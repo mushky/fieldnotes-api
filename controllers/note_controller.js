@@ -52,7 +52,7 @@ export function searchNotesByContent(req, res) {
     .then((notes) => {
       return res.status(200).json({
         success: true,
-        message: 'A list of all notes by selected category',
+        message: 'A list of all notes by search criteria',
         Note: notes,
       });
     })
@@ -63,6 +63,32 @@ export function searchNotesByContent(req, res) {
         error: err
       })
     })
+}
+
+export function getNotesByUserAndCategory(req, res) {
+  const userId = req.query.userId;
+  const category = req.query.category;
+
+  console.log(userId);
+  console.log(category);
+
+  Note.find({category: {$regex: category}})
+    .select('_id title content link category tags userId')
+    .then((notes) => {
+      return res.status(200).json({
+        success: true,
+        message: 'A list of all notes by category and user',
+        Note: notes,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: 'Server error. Please try again',
+        error: err
+      })
+    })
+
 }
 
 // create new note
