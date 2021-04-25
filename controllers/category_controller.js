@@ -26,14 +26,11 @@ export function getCategoriesByUserId(req, res) {
 	Category.find({ userId: userId })
 		.select('_id name userId')
 		.then((categories) => {
-			// let selectFriendlyCategories = [];
-			// for (let i = 0 ; i < categories.length; i++) {
-			// 	selectFriendlyCategories.push({ 'value': categories[i].name})
-			// }
+
 			return res.status(200).json({
 				success: true,
 				message: 'A list of all categories by user',
-				category: categories,
+				category: categories.reverse(),
 			});
 		})
 		.catch((err) => {
