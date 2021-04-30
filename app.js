@@ -30,6 +30,8 @@ app.get('/', (req, res) => {
   });
 });
 
-app.listen(port, "192.168.1.75", () => {
+app.listen(port, () => {
   console.log(`Our server is running on port ${port}`);
 });
+
+// , "192.168.1.75"

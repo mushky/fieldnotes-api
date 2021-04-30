@@ -35,6 +35,10 @@ const NoteSchema = new Schema({
 	categoryId: {
 		type: String,
 		required: false
+	},
+	isTrash: {
+		type: Boolean,
+		required: true
 	}
 }, { timestamps: true },);
 

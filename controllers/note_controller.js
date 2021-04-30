@@ -25,7 +25,7 @@ export function getNotes(req, res) {
 export function getNotesByUser(req, res) {
 	const userId = req.params.userId;
 	Note.find({ userId: userId })
-		.select('_id title content link category tags userId')
+		.select('_id title content link category tags userId, isTrash')
 		.then((notes) => {
 			return res.status(200).json({
 				success: true,
@@ -101,7 +101,8 @@ export function createNote(req, res) {
     content: req.body.content,
     source: req.body.source,
 		category: req.body.category,
-		tags: req.body.tags
+		tags: req.body.tags,
+    isTrash: false
   });
   return note
     .save()
@@ -145,13 +146,54 @@ export function getNote(req, res) {
 export function updateNote(req, res) {
   const id = req.params.noteId;
   const updateObject = req.body;
-  Note.update({ _id:id }, { $set:updateObject })
+  Note.update({ _id: id }, { $set:updateObject })
     .exec()
     .then(() => {
       res.status(200).json({
         success: true,
         message: 'Note is updated',
         updateNote: updateObject,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: 'Server error. Please try again.'
+      });
+    });
+}
+
+// Sets note isTrash to true
+export function intoTrash(req,res) {
+  const id = req.params.noteId;
+
+  Note.updateOne({ _id: id}, { $set: {isTrash: true} })
+    .exec()
+    .then(() => {
+      res.status(200).json({
+        success: true,
+        message: 'Note is IN the trash',
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: 'Server error. Please try again.'
+      });
+    });
+}
+
+// Sets note isTrash to false
+export function outOfTrash(req,res) {
+  const id = req.params.noteId;
+  const updateObject = req.body;
+
+  Note.updateOne({ _id: id}, { $set: {isTrash: false} })
+    .exec()
+    .then(() => {
+      res.status(200).json({
+        success: true,
+        message: 'Note is OUT of the trash',
       });
     })
     .catch((err) => {
