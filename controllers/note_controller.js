@@ -4,7 +4,7 @@ import Note from '../models/note';
 // Get all Notes
 export function getNotes(req, res) {
   Note.find()
-    .select('_id title content link category tags userId')
+    .select('_id title content source category tags userId')
     .then((notes) => {
       return res.status(200).json({
         success: true,
@@ -25,7 +25,7 @@ export function getNotes(req, res) {
 export function getNotesByUser(req, res) {
 	const userId = req.params.userId;
 	Note.find({ userId: userId })
-		.select('_id title content link category tags userId, isTrash')
+		.select('_id title content source category tags userId, isTrash')
 		.then((notes) => {
 			return res.status(200).json({
 				success: true,
@@ -48,7 +48,7 @@ export function searchNotesByContent(req, res) {
   console.log(content);
   console.log(userId);
   Note.find({content: {$regex: content }}) // $options: 'i'
-    .select('_id title content link category tags userId')
+    .select('_id title content source category tags userId')
     .then((notes) => {
       return res.status(200).json({
         success: true,
@@ -73,7 +73,7 @@ export function getNotesByUserAndCategory(req, res) {
   console.log(category);
 
   Note.find({category: {$regex: category}})
-    .select('_id title content link category tags userId')
+    .select('_id title content source category tags userId')
     .then((notes) => {
       return res.status(200).json({
         success: true,

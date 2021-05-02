@@ -1,0 +1,18 @@
+version: '3'
+services: 
+  fieldnotes-api:
+    container_name: fieldnotes-api
+    image: arayus/fieldnotes-api
+    restart: always
+    build: .
+    ports:
+      - "3001:8080"
+    links:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - '27018:27017'
