@@ -45,8 +45,7 @@ export function getNotesByUser(req, res) {
 export function searchNotesByContent(req, res) {
   const userId = req.query.userId;
   const content = req.query.content;
-  console.log(content);
-  console.log(userId);
+
   Note.find({content: {$regex: content }}) // $options: 'i'
     .select('_id title content source category tags userId')
     .then((notes) => {
@@ -69,9 +68,6 @@ export function getNotesByUserAndCategory(req, res) {
   const userId = req.query.userId;
   const category = req.query.category;
 
-  console.log(userId);
-  console.log(category);
-
   Note.find({category: {$regex: category}})
     .select('_id title content source category tags userId')
     .then((notes) => {
@@ -93,7 +89,6 @@ export function getNotesByUserAndCategory(req, res) {
 
 // create new note
 export function createNote(req, res) {
-  console.log(req);
   const note = new Note({
     _id: mongoose.Types.ObjectId(),
 		userId: req.body.userId,
@@ -146,7 +141,7 @@ export function getNote(req, res) {
 export function updateNote(req, res) {
   const id = req.params.noteId;
   const updateObject = req.body;
-  Note.update({ _id: id }, { $set:updateObject })
+  Note.updateOne({ _id: id }, { $set:updateObject })
     .exec()
     .then(() => {
       res.status(200).json({
@@ -186,7 +181,6 @@ export function intoTrash(req,res) {
 // Sets note isTrash to false
 export function outOfTrash(req,res) {
   const id = req.params.noteId;
-  const updateObject = req.body;
 
   Note.updateOne({ _id: id}, { $set: {isTrash: false} })
     .exec()

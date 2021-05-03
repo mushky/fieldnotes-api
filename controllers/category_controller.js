@@ -26,7 +26,6 @@ export function getCategoriesByUserId(req, res) {
 	Category.find({ userId: userId })
 		.select('_id name userId')
 		.then((categories) => {
-
 			return res.status(200).json({
 				success: true,
 				message: 'A list of all categories by user',

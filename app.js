@@ -13,14 +13,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(logger('dev'));
 app.use('/api/', Routes);
 
-mongoose.connect('mongodb://localhost/notesDB')
+mongoose.connect('mongodb://localhost/notesDB', { useUnifiedTopology: true, useNewUrlParser: true  })
   .then(()=> {
     console.log('Database connected');
   })
   .catch((error)=> {
     console.log('Error connecting to database ' + error);
   });
-
+// Handles DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead warning
+mongoose.set('useCreateIndex', true);
 // set up port
 const port = process.env.PORT || 3001;
 // set up route
