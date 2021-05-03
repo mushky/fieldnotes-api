@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(logger('dev'));
 app.use('/api/', Routes);
 
-mongoose.connect('mongodb://localhost/notesDB', { useUnifiedTopology: true, useNewUrlParser: true  })
+mongoose.connect(process.env.DATABASE, { useUnifiedTopology: true, useNewUrlParser: true  })
   .then(()=> {
     console.log('Database connected');
   })
