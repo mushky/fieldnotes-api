@@ -186,7 +186,7 @@ const paginationHelper = async(req, res, details, message) => {
     const endIndex = page * limit
     const results = {};
   
-    results.results = await Note.find(details).limit(limit).skip(skip)
+    results.results = await (await Note.find(details).limit(limit).skip(skip)).reverse()
 
     if (startIndex > 0) {
       results.previous = {
