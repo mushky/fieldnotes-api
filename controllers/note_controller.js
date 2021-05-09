@@ -2,93 +2,48 @@ import mongoose from 'mongoose';
 import Note from '../models/note';
 
 // Get all Notes
-export function getNotes(req, res) {
-  Note.find()
-    .select('_id title content source category tags userId')
-    .then((notes) => {
-      return res.status(200).json({
-        success: true,
-        message: 'A list of all notes',
-        Note: notes,
-      });
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: 'Server error. Please try again.',
-        error: err.message,
-      });
-    });
+export const getNotes = (req, res) => {
+  try {
+    paginationHelper(req, res, {}, "List of all paginated Notes")
+  } catch(e) {
+    res.status(500).json({ "message": e.message })
+  }
 }
 
 // Get all notes from user
-export function getNotesByUser(req, res) {
+export const getNotesByUser = async (req, res) => {
 	const userId = req.params.userId;
-	Note.find({ userId: userId })
-		.select('_id title content source category tags userId, isTrash')
-		.then((notes) => {
-			return res.status(200).json({
-				success: true,
-				message: 'A list of all notes by user',
-				Note: notes.reverse(),
-			});
-		})
-		.catch((err) => {
-			res.status(500).json({
-				success: false,
-				message: 'Server error. Please try again.',
-				error: err.message,
-			});
-		})
+  try {
+    paginationHelper(req, res, {userId}, `List of all notes by ${userId}`)
+  } catch(e) {
+    res.status(500).json({ "message": e.message })
+  }
 }
 
-export function searchNotesByContent(req, res) {
+export const searchNotesByContent = async (req, res) => {
   const userId = req.query.userId;
   const content = req.query.content;
 
-  Note.find({content: {$regex: content }}) // $options: 'i'
-    .select('_id title content source category tags userId')
-    .then((notes) => {
-      return res.status(200).json({
-        success: true,
-        message: 'A list of all notes by search criteria',
-        Note: notes,
-      });
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: 'Server error. Please try again.',
-        error: err
-      })
-    })
+  try {
+    paginationHelper(req, res, {userId, content: {$regex: content }}, `A list of notes with search term ${content}`)
+  } catch(e) {
+    res.status(500).json({ "message": e.message })
+  }
 }
 
-export function getNotesByUserAndCategory(req, res) {
+export const getNotesByUserAndCategory = (req, res) => {
   const userId = req.query.userId;
   const category = req.query.category;
 
-  Note.find({category: {$regex: category}})
-    .select('_id title content source category tags userId')
-    .then((notes) => {
-      return res.status(200).json({
-        success: true,
-        message: 'A list of all notes by category and user',
-        Note: notes,
-      });
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: 'Server error. Please try again',
-        error: err
-      })
-    })
-
+  try {
+    paginationHelper(req, res, {userId, category: {$regex: category}}, `A list of all notes by ${category} and ${user}`)
+  } catch(e) {
+    res.status(500).json({ "message": e.message })
+  }
 }
 
 // create new note
-export function createNote(req, res) {
+export const createNote = (req, res) => {
   const note = new Note({
     _id: mongoose.Types.ObjectId(),
 		userId: req.body.userId,
@@ -118,7 +73,7 @@ export function createNote(req, res) {
 }
 
 // Get Single Note
-export function getNote(req, res) {
+export const getNote = (req, res) => {
   const id = req.params.noteId;
   Note.findById(id)
     .then((note) => {
@@ -138,7 +93,7 @@ export function getNote(req, res) {
 }
 
 // update note
-export function updateNote(req, res) {
+export const updateNote = (req, res) => {
   const id = req.params.noteId;
   const updateObject = req.body;
   Note.updateOne({ _id: id }, { $set:updateObject })
@@ -159,7 +114,7 @@ export function updateNote(req, res) {
 }
 
 // Sets note isTrash to true
-export function intoTrash(req,res) {
+export const intoTrash = (req,res) => {
   const id = req.params.noteId;
 
   Note.updateOne({ _id: id}, { $set: {isTrash: true} })
@@ -179,7 +134,7 @@ export function intoTrash(req,res) {
 }
 
 // Sets note isTrash to false
-export function outOfTrash(req,res) {
+export const outOfTrash = (req,res) => {
   const id = req.params.noteId;
 
   Note.updateOne({ _id: id}, { $set: {isTrash: false} })
@@ -199,7 +154,7 @@ export function outOfTrash(req,res) {
 }
 
 // delete a note
-export function deleteNote(req, res) {
+export const deleteNote = (req, res) => {
   const id = req.params.noteId;
   Note.findByIdAndRemove(id)
     .exec()
@@ -211,3 +166,52 @@ export function deleteNote(req, res) {
       success: false,
     }));
 }
+
+const paginationHelper = async(req, res, details, message) => {
+  let page = parseInt(req.query.page)
+  let size = parseInt(req.query.size)
+
+  try {
+    if (!page) {
+      page = 1
+    }
+    if (!size) {
+      size = 1
+    }
+  
+    const limit = parseInt(size)
+    const skip = (page - 1) * limit
+
+    const startIndex = page - 1
+    const endIndex = page * limit
+    const results = {};
+  
+    results.results = await Note.find(details).limit(limit).skip(skip)
+
+    if (startIndex > 0) {
+      results.previous = {
+        page: page - 1,
+        limit: limit
+      }
+    }
+
+    if (endIndex < Note.length) {
+      results.next = {
+        page: parseInt(page) + 1,
+        limit: limit
+      }
+    }
+
+    res.status(200).json({
+      results: {
+        nextPage: results.next,
+        prevPage: results.previous,
+        success: true,
+        message: `${message}`,
+        notes: results.results
+      }
+    })
+  } catch(e) {
+    res.status(500).json({"message": e.message})
+  }
+} 

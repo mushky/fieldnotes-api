@@ -1,6 +1,10 @@
 import express from 'express';
 
-import { createNote, getNotes, searchNotesByContent, getNote, updateNote, deleteNote, getNotesByUser, getNotesByUserAndCategory, intoTrash, outOfTrash } from '../controllers/note_controller';
+import { 
+  createNote, getNotes, searchNotesByContent, getNote, 
+  updateNote, deleteNote, getNotesByUser, getNotesByUserAndCategory, 
+  intoTrash, outOfTrash } from '../controllers/note_controller';
+
 import { getCategories, getCategoriesByUserId, getCategory, createCategory, updateCategory, deleteCategory } from '../controllers/category_controller';
 import { createUser, loginUser } from '../controllers/user_controller';
 
