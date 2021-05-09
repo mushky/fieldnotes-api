@@ -1,0 +1,7 @@
+# GET http://ec2-13-57-18-19.us-west-1.compute.amazonaws.com:3001/api/notes/user/608de6dbb7caa822f7cf4e70
+
+//GET http://localhost:3001/api/notes?page=1&size=3
+
+//GET http://localhost:3001/api/notes/user/6070a4a806b7799e96e72df9?page=1&size=20
+
+GET http://localhost:3001/api/notes/search?userId=6070a4a806b7799e96e72df9&content=test
