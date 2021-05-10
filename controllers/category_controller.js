@@ -22,31 +22,31 @@ export function getCategories(req, res) {
 }
 
 export function getCategoriesByUserId(req, res) {
-	const userId = req.params.userId;
-	Category.find({ userId: userId })
-		.select('_id name userId')
-		.then((categories) => {
-			return res.status(200).json({
-				success: true,
-				message: 'A list of all categories by user',
-				category: categories.reverse(),
-			});
-		})
-		.catch((err) => {
-			res.status(500).json({
-				success: false,
-				message: 'Server error. Please try again.',
-				error: err.message,
-			});
-		})
+  const userId = req.params.userId;
+  Category.find({ userId: userId })
+    .select('_id name userId')
+    .then((categories) => {
+      return res.status(200).json({
+        success: true,
+        message: 'A list of all categories by user',
+        category: categories.reverse(),
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+      success: false,
+      message: 'Server error. Please try again.',
+      error: err.message,
+      });
+    })
 }
 
 // create new category
 export function createCategory(req, res) {
   const category = new Category({
     _id: mongoose.Types.ObjectId(),
-		name: req.body.name,
-		userId: req.body.userId,
+    name: req.body.name,
+    userId: req.body.userId,
   });
   return category
     .save()
@@ -102,7 +102,7 @@ export function updateCategory(req, res) {
     .catch((err) => {
       res.status(500).json({
         success: false,
-        message: 'Server error. Please try again.'
+        message: `Server error. Please try again. ${err.message}`
       });
     });
 }
