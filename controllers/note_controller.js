@@ -45,14 +45,10 @@ export const getNotesByUserAndCategory = (req, res) => {
 // create new note
 export const createNote = (req, res) => {
   const note = new Note({
-    _id: mongoose.Types.ObjectId(),
-    userId: req.body.userId,
-    title: req.body.title,
-    content: req.body.content,
-    source: req.body.source,
-    category: req.body.category,
-    tags: req.body.tags,
-    isTrash: false
+    _id: mongoose.Types.ObjectId(),userId: req.body.userId, 
+    title: req.body.title, content: req.body.content,
+    source: req.body.source, category: req.body.category, 
+    tags: req.body.tags, isTrash: false
   });
   return note
     .save()
@@ -116,7 +112,6 @@ export const updateNote = (req, res) => {
 // Sets note isTrash to true
 export const intoTrash = (req,res) => {
   const id = req.params.noteId;
-
   Note.updateOne({ _id: id}, { $set: {isTrash: true} })
     .exec()
     .then(() => {
@@ -136,7 +131,6 @@ export const intoTrash = (req,res) => {
 // Sets note isTrash to false
 export const outOfTrash = (req,res) => {
   const id = req.params.noteId;
-
   Note.updateOne({ _id: id}, { $set: {isTrash: false} })
     .exec()
     .then(() => {
