@@ -12,7 +12,7 @@ export const getNotes = (req, res) => {
 
 // Get all notes from user
 export const getNotesByUser = async (req, res) => {
-	const userId = req.params.userId;
+  const userId = req.params.userId;
   try {
     paginationHelper(req, res, {userId}, `List of all notes by ${userId}`)
   } catch(e) {
@@ -46,12 +46,12 @@ export const getNotesByUserAndCategory = (req, res) => {
 export const createNote = (req, res) => {
   const note = new Note({
     _id: mongoose.Types.ObjectId(),
-		userId: req.body.userId,
+    userId: req.body.userId,
     title: req.body.title,
     content: req.body.content,
     source: req.body.source,
-		category: req.body.category,
-		tags: req.body.tags,
+    category: req.body.category,
+    tags: req.body.tags,
     isTrash: false
   });
   return note
