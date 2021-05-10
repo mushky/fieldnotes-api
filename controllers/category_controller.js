@@ -83,7 +83,7 @@ export function getCategory(req, res) {
         message: 'This note does not exist',
         error: err.message,
       });
-		});
+    });
 }
 
 // update note
