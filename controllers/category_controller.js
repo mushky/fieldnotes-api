@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import Category from '../models/category';
 
 // Get all Categories
-export function getCategories(req, res) {
+export const getCategories = (req, res) => {
   Category.find()
     .select('_id name userId')
     .then((categories) => {
@@ -21,7 +21,7 @@ export function getCategories(req, res) {
     });
 }
 
-export function getCategoriesByUserId(req, res) {
+export const getCategoriesByUserId = (req, res) => {
   const userId = req.params.userId;
   Category.find({ userId: userId })
     .select('_id name userId')
@@ -42,7 +42,7 @@ export function getCategoriesByUserId(req, res) {
 }
 
 // create new category
-export function createCategory(req, res) {
+export const createCategory = (req, res) => {
   const category = new Category({
     _id: mongoose.Types.ObjectId(),
     name: req.body.name,
@@ -67,7 +67,7 @@ export function createCategory(req, res) {
 }
 
 // Get Single Category
-export function getCategory(req, res) {
+export const getCategory = (req, res) => {
   const id = req.params.noteId;
   Category.findById(id)
     .then((category) => {
@@ -87,7 +87,7 @@ export function getCategory(req, res) {
 }
 
 // update note
-export function updateCategory(req, res) {
+export const updateCategory = (req, res) => {
   const id = req.params.categoryId;
   const updateObject = req.body;
   Category.update({ _id:id }, { $set:updateObject })
@@ -108,7 +108,7 @@ export function updateCategory(req, res) {
 }
 
 // delete a note
-export function deleteCategory(req, res) {
+export const deleteCategory = (req, res) => {
   const id = req.params.categoryId;
   Category.findByIdAndRemove(id)
     .exec()

@@ -18,7 +18,7 @@ import bcrypt from 'bcrypt';
 import User from '../models/user';
 import Token from '../middleware/token';
 
-export function createUser(req, res) {
+export const createUser = (req, res) => {
   bcrypt.hash(req.body.password, 15, (err, hash) => {
     const password = hash;
     const user = new User({
@@ -68,7 +68,7 @@ export function createUser(req, res) {
     }); 
 }
 
-export function loginUser(req, res) {
+export const loginUser = (req, res) => {
   const { username, password } = req.body;
 	console.log(req.body);
   User.findOne({ username })
