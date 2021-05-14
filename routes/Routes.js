@@ -13,10 +13,10 @@ import verifyToken from '../middleware/verifytoken';
 const router = express.Router();
 
 // Notes
-router.get('/notes/user/:userId', getNotesByUser);
+router.get('/notes/user/:userId', verifyToken, getNotesByUser);
 router.get('/notes', getNotes);
-router.get('/notes/search', searchNotesByContent)
-router.get('/notes/category', getNotesByUserAndCategory)
+router.get('/notes/search', verifyToken, searchNotesByContent)
+router.get('/notes/category', verifyToken, getNotesByUserAndCategory)
 router.get('/notes/:noteId', getNote);
 router.post('/notes', verifyToken, createNote);
 router.put('/notes/:noteId', verifyToken, updateNote);

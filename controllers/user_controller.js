@@ -101,5 +101,4 @@ export const loginUser = (req, res) => {
     .catch(() => res.status(500).json({ message: 'Our server is in the locker room, please do try again.' }));
 }
 
-
 export default User;
