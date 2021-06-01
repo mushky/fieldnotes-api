@@ -7,6 +7,42 @@ import Routes from './routes/Routes';
 const app = express();
 const cors = require('cors');
 
+const { spawn } = require('child_process');
+const path = require('path')
+//mongodump --forceTableScan  --db=supernote --archive=./supernote.gzip --gzip
+
+const DB_NAME = process.env.DB_NAME
+const ARCHIVE_PATH = path.join(__dirname, 'public', `${DB_NAME}.gzip`)
+
+backupMongoDB()
+
+function backupMongoDB() {
+  const child = spawn('mongodump', [
+    '--forceTableScan',
+    `--db=${DB_NAME}`,
+    `--archive=${ARCHIVE_PATH}`,
+    '--gzip',
+  ]);
+
+  child.stdout.on('data', (data) => {
+    console.log('stdout:\n', data)
+  });
+
+  child.stderr.on('data', (data) => {
+    console.log('stderr:\n', data)
+  });
+
+  child.on('error', (error) => {
+    console.log('error:\n', error)
+  });
+  
+  child.on('exit', (code, signal) => {
+    if (code) console.log('Process exit with code:', code)
+    else if (signal) console.log('Process killed with signal:', signal)
+    else console.log('Backup is successful')
+  });
+}
+
 app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
